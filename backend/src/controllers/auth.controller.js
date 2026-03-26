@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
-import jwt, { decode } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { redis } from "../lib/redis.js";
 import dotenv from "dotenv";
 
@@ -90,10 +90,11 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
+  
   if (!email || !password)
     return res.status(400).json({ message: "Email and password are required" });
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email });    
     if (!user) return res.status(400).json({ message: "Invalid Credentials" });
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
@@ -103,12 +104,14 @@ export const login = async (req, res) => {
     const { accessToken, refreshToken } =await generateToken(user._id);
     await storeRefreshToken(user._id, refreshToken);
     setCookies(res, accessToken, refreshToken);
+    
     res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
     });
+
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     console.log("Error in login endpoint", error.message);

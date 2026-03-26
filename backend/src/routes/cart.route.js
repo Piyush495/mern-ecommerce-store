@@ -9,7 +9,7 @@ import {
 
 const router = express.Router();
 
-application.use(protectRoute);
+router.use(protectRoute);
 
 router.get("/", getCartProducts);
 router.post("/", addToCart);
