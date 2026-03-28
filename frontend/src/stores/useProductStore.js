@@ -15,6 +15,7 @@ export const useProductStore = create((set) => ({
         products: [...prevState.products, res.data],
         loading: false,
       }));
+      toast.success("Product created successfully");
     } catch (error) {
       toast.error(error?.response?.data?.error);
       set({ loading: false });
@@ -24,11 +25,11 @@ export const useProductStore = create((set) => ({
     set({ loading: true });
     try {
       const response = await axiosInstance.get("/products");
-      set({ products: response.data.products});
+      set({ products: response.data.products });
     } catch (error) {
       toast.error(error?.response?.data?.error || "Failed to fetch products");
-    }finally{
-        set({loading:false});
+    } finally {
+      set({ loading: false });
     }
   },
   fetchProductsByCategory: async (category) => {
@@ -37,10 +38,11 @@ export const useProductStore = create((set) => ({
       const response = await axiosInstance.get(
         `/products/category/${category}`,
       );
-      set({ products: response.data.products, loading: false });
+      set({ products: response.data.products});
     } catch (error) {
-      set({ error: "Failed to fetch products", loading: false });
-      toast.error(error.response.data.error || "Failed to fetch products");
+      toast.error(error?.response?.data?.error || "Failed to fetch products");
+    }finally{
+      set({loading:false});
     }
   },
   deleteProduct: async (productId) => {
@@ -51,11 +53,12 @@ export const useProductStore = create((set) => ({
         products: prevProducts.products.filter(
           (product) => product._id !== productId,
         ),
-        loading: false,
       }));
+      toast.success("Product deleted succesfully")
     } catch (error) {
+      toast.error(error?.response?.data?.error || "Failed to delete product");
+    } finally {
       set({ loading: false });
-      toast.error(error.response.data.error || "Failed to delete product");
     }
   },
   toggleFeaturedProduct: async (productId) => {
@@ -68,12 +71,12 @@ export const useProductStore = create((set) => ({
           product._id === productId
             ? { ...product, isFeatured: response.data.isFeatured }
             : product,
-        ),
-        loading: false,
+        )
       }));
     } catch (error) {
-      set({ loading: false });
-      toast.error(error.response.data.error || "Failed to update product");
+      toast.error(error?.response?.data?.error || "Failed to update product");
+    }finally{
+      set({loading:false});
     }
   },
   fetchFeaturedProducts: async () => {

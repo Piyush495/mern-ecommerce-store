@@ -1,16 +1,14 @@
 # 🛒 MERN-Ecommerce-Store
 
-A production-grade, full-stack e-commerce platform built with the MERN stack, featuring a comprehensive Admin Dashboard, secure Stripe payments, and high-performance Redis caching.
+A production-grade, full-stack e-commerce platform built with the MERN stack, featuring a comprehensive Admin Dashboard and high-performance Redis caching.
 
 ---
 
 ## 🚀 Key Technical Highlights
 
-- **Secure Payment Lifecycle:** Integrated Stripe API to handle end-to-end checkout sessions and dynamic coupon generation for high-value orders.
-
 - **Performance Optimization:** Implemented Redis as a caching layer for featured products, significantly reducing database load and improving response times.
 
-- **Advanced Analytics:** Architected a dedicated Admin Dashboard utilizing MongoDB Aggregation Pipelines and Recharts to visualize real-time sales and revenue metrics.
+- **Admin Dashboard:** Built a dedicated Admin Dashboard with full product management — create, delete, and toggle featured status on products.
 
 - **Robust Security:** Developed custom authentication using JWT with HTTP-only cookies and Axios interceptors for automated token refreshing.
 
@@ -20,9 +18,9 @@ A production-grade, full-stack e-commerce platform built with the MERN stack, fe
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React.js, Tailwind CSS, Zustand, Recharts
+- **Frontend:** React.js, Tailwind CSS, Zustand
 - **Backend:** Node.js, Express.js 
 - **Database & Caching:** MongoDB (Mongoose), Redis
-- **Services:** Stripe (Payments), Cloudinary (Media Storage)
+- **Services:** Cloudinary (Media Storage)
 
 ---
