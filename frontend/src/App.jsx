@@ -27,7 +27,6 @@ function App() {
     if (!checkingAuth && user) getCartItems();
   }, [checkingAuth, user]);
 
-  if (checkingAuth) return <LoadingSpinner />;
   return (
     <div className="min-h-screen bg-gray-900 text-white relative overflow-hidden">
       {/* Background gradient */}
@@ -51,6 +50,7 @@ function App() {
           <Route
             path="/secret-dashboard"
             element={
+              checkingAuth?<LoadingSpinner/>:
               user?.role === "admin" ? (
                 <AdminPage />
               ) : (
@@ -61,11 +61,11 @@ function App() {
           <Route path="/category/:category" element={<CategoryPage />} />
           <Route
             path="/cart"
-            element={user ? <CartPage /> : <Navigate to="/login" />}
+            element={checkingAuth ? <LoadingSpinner /> :user ? <CartPage /> : <Navigate to="/login" />}
           />
           <Route
             path="/purchase-success"
-            element={user ? <PurchaseSuccessPage /> : <Navigate to="/login" />}
+            element={checkingAuth ? <LoadingSpinner /> :user ? <PurchaseSuccessPage /> : <Navigate to="/login" />}
           />
         </Routes>
       </div>
