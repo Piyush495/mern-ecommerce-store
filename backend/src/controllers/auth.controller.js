@@ -90,28 +90,27 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
-  
+
   if (!email || !password)
     return res.status(400).json({ message: "Email and password are required" });
   try {
-    const user = await User.findOne({ email });    
+    const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: "Invalid Credentials" });
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect)
       return res.status(400).json({ message: "Invalid Credentials" });
 
-    const { accessToken, refreshToken } =await generateToken(user._id);
+    const { accessToken, refreshToken } = await generateToken(user._id);
     await storeRefreshToken(user._id, refreshToken);
     setCookies(res, accessToken, refreshToken);
-    
+
     res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
     });
-
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
     console.log("Error in login endpoint", error.message);
@@ -128,8 +127,16 @@ export const logout = async (req, res) => {
       );
       await redis.del(`refresh_token:${decoded.userId}`);
     }
-    res.clearCookie("accessToken");
-    res.clearCookie("refreshToken");
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      secure: process.env.MODE === "production",
+      sameSite: "none",
+    });
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.MODE === "production",
+      sameSite: "none",
+    });
     res.json({ message: "Logged out successfully" });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
@@ -137,7 +144,7 @@ export const logout = async (req, res) => {
   }
 };
 
-export const refreshToken = async (req,res) => {
+export const refreshToken = async (req, res) => {
   try {
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken)
@@ -167,11 +174,11 @@ export const refreshToken = async (req,res) => {
   }
 };
 
-export const getProfile=(req,res)=>{
+export const getProfile = (req, res) => {
   try {
-    res.json(req.user)
+    res.json(req.user);
   } catch (error) {
-    console.log("Error in getProfile endpoint",error.message);
-    res.status(500).json({message:"Internal server error"});
+    console.log("Error in getProfile endpoint", error.message);
+    res.status(500).json({ message: "Internal server error" });
   }
-}
+};
