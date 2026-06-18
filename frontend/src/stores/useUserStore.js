@@ -35,7 +35,7 @@ export const useUserStore = create((set, get) => ({
       set({ user: res.data });
       toast.success("Login Successful");
     } catch (error) {
-      toast.error(error?.response?.data?.message || "An error occured");
+      toast.error(error?.response?.data?.message || "An error occurred");
     } finally {
       set({ loading: false });
     }
