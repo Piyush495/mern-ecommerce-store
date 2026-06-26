@@ -5,7 +5,7 @@ import cors from "cors";
 
 import authRoutes from "./routes/auth.route.js";
 import productRoutes from "./routes/product.route.js";
-import cartRoutes from "./routes/cart.route.js"
+import cartRoutes from "./routes/cart.route.js";
 
 import { connectDB } from "./lib/db.js";
 
@@ -29,7 +29,7 @@ connectDB()
       console.log(`server is running on port ${PORT}`);
     });
   })
-  .catch((err)=>{
+  .catch((err) => {
     console.error("Database connection failed:", err);
     process.exit(1);
   });
