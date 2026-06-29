@@ -29,6 +29,8 @@ export const protectRoute = async (req, res, next) => {
       if (error.name === "TokenExpiredError") {
         return res.status(401).json({ message: "Token expired" });
       }
+      // Fallback: Re-throw to propagate to the outer catch block, which returns a 500 erro
+      throw error;
     }
   } catch (error) {
     console.log("Error in protectRoute middleware");
